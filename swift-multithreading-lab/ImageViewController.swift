@@ -16,19 +16,54 @@ class ImageViewController : UIViewController, UIScrollViewDelegate {
     var imageView: UIImageView!
     var activityIndicator: UIActivityIndicatorView!
     
+    let mainQueue = NSOperationQueue.mainQueue()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        activityIndicator.color = UIColor.cyanColor()
+        activityIndicator.center = view.center
+        
+        view.addSubview(activityIndicator)
+        
+        
     }
     
     @IBAction func antiqueButtonTapped(sender: AnyObject) {
-        filterImage { (result) in
-            result ? print("Image filtering complete") : print("Image filtering did not complete")
+        let queue = NSOperationQueue()
+        queue.qualityOfService = .UserInitiated
+        
+       
+        
+        
+        // mainQueue.qualityOfService = .UserInitiated
+        
+        self.activityIndicator.startAnimating()
+        
+        queue.addOperationWithBlock{
+            
+            
+            self.filterImage {(result) in
+                self.mainQueue.addOperationWithBlock{
+                    self.activityIndicator.stopAnimating()
+                    result ? print("Image filtering complete") : print("Image filtering did not complete")
+                    
+                }
+            }
+            
+            
         }
+        
+       
+        
+        
     }
     
     func filterImage(completion: (Bool) -> ()) {
-        guard let image = imageView?.image, cgimg = image.CGImage else {
+        
+        guard let image = self.imageView?.image, cgimg = image.CGImage else {
             print("imageView doesn't have an image!")
             return
         }
@@ -59,13 +94,16 @@ class ImageViewController : UIViewController, UIScrollViewDelegate {
                 let finalResult = UIGraphicsGetImageFromCurrentImageContext()
                 UIGraphicsEndImageContext()
                 
-                print("Setting final result")
-                self.imageView?.image = finalResult
-                completion(true)
+                self.mainQueue.addOperationWithBlock{
+                    print("Setting final result")
+                    self.imageView?.image = finalResult
+                    completion(true)
+                }
             }
         }
     }
 }
+
 
 extension ImageViewController {
     

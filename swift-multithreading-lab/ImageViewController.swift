@@ -16,14 +16,14 @@ class ImageViewController : UIViewController, UIScrollViewDelegate {
     var imageView: UIImageView!
     var activityIndicator: UIActivityIndicatorView!
     
-    let mainQueue = NSOperationQueue.mainQueue()
+    let mainQueue = OperationQueue.main
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-        activityIndicator.color = UIColor.cyanColor()
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        activityIndicator.color = UIColor.cyan
         activityIndicator.center = view.center
         
         view.addSubview(activityIndicator)
@@ -31,9 +31,9 @@ class ImageViewController : UIViewController, UIScrollViewDelegate {
         
     }
     
-    @IBAction func antiqueButtonTapped(sender: AnyObject) {
-        let queue = NSOperationQueue()
-        queue.qualityOfService = .UserInitiated
+    @IBAction func antiqueButtonTapped(_ sender: AnyObject) {
+        let queue = OperationQueue()
+        queue.qualityOfService = .userInitiated
         
        
         
@@ -42,11 +42,11 @@ class ImageViewController : UIViewController, UIScrollViewDelegate {
         
         self.activityIndicator.startAnimating()
         
-        queue.addOperationWithBlock{
+        queue.addOperation{
             
             
             self.filterImage {(result) in
-                self.mainQueue.addOperationWithBlock{
+                self.mainQueue.addOperation{
                     self.activityIndicator.stopAnimating()
                     result ? print("Image filtering complete") : print("Image filtering did not complete")
                     
@@ -61,40 +61,40 @@ class ImageViewController : UIViewController, UIScrollViewDelegate {
         
     }
     
-    func filterImage(completion: (Bool) -> ()) {
+    func filterImage(_ completion: @escaping (Bool) -> ()) {
         
-        guard let image = self.imageView?.image, cgimg = image.CGImage else {
+        guard let image = self.imageView?.image, let cgimg = image.cgImage else {
             print("imageView doesn't have an image!")
             return
         }
         
-        let openGLContext = EAGLContext(API: .OpenGLES2)
-        let context = CIContext(EAGLContext: openGLContext!)
-        let coreImage = CIImage(CGImage: cgimg)
+        let openGLContext = EAGLContext(api: .openGLES2)
+        let context = CIContext(eaglContext: openGLContext!)
+        let coreImage = CIImage(cgImage: cgimg)
         
         let sepiaFilter = CIFilter(name: "CISepiaTone")
         sepiaFilter?.setValue(coreImage, forKey: kCIInputImageKey)
         sepiaFilter?.setValue(1, forKey: kCIInputIntensityKey)
         print("Applying CISepiaTone")
         
-        if let sepiaOutput = sepiaFilter?.valueForKey(kCIOutputImageKey) as? CIImage {
+        if let sepiaOutput = sepiaFilter?.value(forKey: kCIOutputImageKey) as? CIImage {
             let exposureFilter = CIFilter(name: "CIExposureAdjust")
             exposureFilter?.setValue(sepiaOutput, forKey: kCIInputImageKey)
             exposureFilter?.setValue(1, forKey: kCIInputEVKey)
             print("Applying CIExposureAdjust")
             
-            if let exposureOutput = exposureFilter?.valueForKey(kCIOutputImageKey) as? CIImage {
-                let output = context.createCGImage(exposureOutput, fromRect: exposureOutput.extent)
-                let result = UIImage(CGImage: output)
+            if let exposureOutput = exposureFilter?.value(forKey: kCIOutputImageKey) as? CIImage {
+                let output = context.createCGImage(exposureOutput, from: exposureOutput.extent)
+                let result = UIImage(cgImage: output!)
                 
                 print("Rendering image")
                 
                 UIGraphicsBeginImageContextWithOptions(result.size, false, result.scale)
-                result.drawAtPoint(CGPointZero)
+                result.draw(at: CGPoint.zero)
                 let finalResult = UIGraphicsGetImageFromCurrentImageContext()
                 UIGraphicsEndImageContext()
                 
-                self.mainQueue.addOperationWithBlock{
+                self.mainQueue.addOperation{
                     print("Setting final result")
                     self.imageView?.image = finalResult
                     completion(true)
@@ -111,9 +111,9 @@ extension ImageViewController {
         imageView = UIImageView(image: UIImage(named: "FlatironFam"))
         
         scrollView = UIScrollView(frame: view.bounds)
-        scrollView.backgroundColor = UIColor.blackColor()
+        scrollView.backgroundColor = UIColor.black
         scrollView.contentSize = imageView.bounds.size
-        scrollView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         scrollView.contentOffset = CGPoint(x: 800, y: 200)
         scrollView.addSubview(imageView)
         view.addSubview(scrollView)
@@ -122,7 +122,7 @@ extension ImageViewController {
         setZoomScale()
     }
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    @objc(viewForZoomingInScrollView:) func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
     
@@ -130,7 +130,7 @@ extension ImageViewController {
         setZoomScale()
     }
     
-    func scrollViewDidZoom(scrollView: UIScrollView) {
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
         let imageViewSize = imageView.frame.size
         let scrollViewSize = scrollView.bounds.size
         

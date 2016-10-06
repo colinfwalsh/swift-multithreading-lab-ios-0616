@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "DC8055B57EEF6BE27DF5245303A570EA0BD6E2F0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "968EF61E59633A25F938B87388C0763DD5BAD4E6" : 9223372036854775807,
+    "DC8055B57EEF6BE27DF5245303A570EA0BD6E2F0" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "47F226B2-4CE0-40A3-8D4F-E12A64E3B28D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "968EF61E59633A25F938B87388C0763DD5BAD4E6" : "",
+    "DC8055B57EEF6BE27DF5245303A570EA0BD6E2F0" : "swift-multithreading-lab-ios-0616\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "swift-multithreading-lab",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "swift-multithreading-lab.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/colinfwalsh\/weatherApp.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "968EF61E59633A25F938B87388C0763DD5BAD4E6"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/colinfwalsh\/swift-multithreading-lab-ios-0616.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DC8055B57EEF6BE27DF5245303A570EA0BD6E2F0"
+    }
+  ]
+}
